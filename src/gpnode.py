@@ -12,21 +12,18 @@ from mushr_global_planner.srv import MushrGlobalPlanner, MushrGlobalPlannerRespo
 from libgp.global_planner import GlobalPlanner
 
 class GPNode:
-    def __init__(self, params, name, map_name='map_server'):
+    def __init__(self, params, name):
         # get map from Map Service
-        print('waiting for map service')
         map_name = rospy.get_param("~static_map", "static_map")
 	rospy.wait_for_service(map_name)
-        print('got map')
         map_msg = rospy.ServiceProxy(map_name, GetMap)().map
 
         # reshape map into numpy array to pass into global_planner
         map_data = np.array(map_msg.data).reshape((map_msg.info.height, map_msg.info.width))
         self.global_planner = GlobalPlanner(map_data, params)
 
-        rospy.init_node(name)#, anonymous=True)
+        rospy.init_node(name)
         self.service = rospy.Service('mushr_global_planner', MushrGlobalPlanner, self.handle_mushr_global_planner)
-        print('service active')
         rospy.spin()
 
     def handle_mushr_global_planner(self, request):
@@ -45,4 +42,4 @@ class GPNode:
         return response
 
 if __name__ == "__main__":
-    gpnode = GPNode({}, "test_gpnode")
+    gpnode = GPNode('', "test_gpnode")

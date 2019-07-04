@@ -9,10 +9,6 @@ class GlobalPlanner:
         self.params = params
 
     def plan(self, start_tup, goal_tup, turning_radius=10, planning_time=30.0):
-        print(start_tup)
-        print(goal_tup)
-        print(self.map_data[int(start_tup[1]), int(start_tup[0])])
-        print(self.map_data[int(goal_tup[1]), int(goal_tup[0])])
         def isStateValid(state):
             y = int(state.getY())
             x = int(state.getX())
