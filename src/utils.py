@@ -18,15 +18,19 @@ def rosquaternion_to_angle(q):
     return yaw
 
 
-def rospose_to_posetup(posemsg):
-    x = posemsg.position.x
-    y = posemsg.position.y
+def rospose_to_posetup(posemsg, map):
+    """Convert global pose to map coordinates"""
+    x = int((posemsg.position.x - map.origin.position.x)/map.resolution)
+    y = int((posemsg.position.y - map.origin.position.y)/map.resolution)
     th = rosquaternion_to_angle(posemsg.orientation)
     return x, y, th
 
 
-def posetup_to_rospose(posetup):
+def posetup_to_rospose(posetup, map):
+    """Convert map coordinates to ros pose"""
     pose = Pose()
-    pose.position = Point(posetup[0], posetup[1], 0)
+    x = posetup[0]*map.resolution + map.origin.position.x
+    y = posetup[1]*map.resolution + map.origin.position.y
+    pose.position = Point(x, y, 0)
     pose.orientation = angle_to_rosquaternion(posetup[2])
     return pose

@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="mushr_global_planner" type="gpnode.py" name="mushr_global_planner" output="screen"/>
+</launch>

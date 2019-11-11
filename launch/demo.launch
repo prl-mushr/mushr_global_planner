@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find mushr_global_planner)/launch/map_server.launch" />
+    <node pkg="mushr_global_planner" type="gpnode.py" name="mushr_global_planner" output="screen"/>
+    <node pkg="mushr_global_planner" type="global_planner_demo.py" name="mushr_gp_demo" output="screen"/>
+</launch>
