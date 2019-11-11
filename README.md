@@ -19,7 +19,16 @@ Then open rviz
 After a minute, if you subscribe to the `/mushr_global_planner_result` topic you should see a red path.
 
 ## Using Mushr Global Planner
-TODO
+To use the global planner simply launch `planner.launch`  
+`roslaunch mushr_global_planner planner.launch`  
+Or include it in your own launch file. Note, the default planner does not launch a map server so that will need to be running separately.
+
+To call the planner, simply make a service request using the API:  
+- start position is in world frame
+- goal position is in world frame
+- turning radius is the turning radius of the car. You can calculate your turning radius although we recommend you tune your car to match your expected turning radius. You should match the variables to the vesc settings preset [car length](https://github.com/prl-mushr/vesc/blob/master/vesc_main/config/racecar-uw-nano/vesc.yaml) and [delta](https://github.com/prl-mushr/mushr_base/blob/master/mushr_base/config/joy_teleop.yaml) (steering angle).  
+    ![equation image](https://drive.google.com/uc?export=view&id=12Fe6HDtbWj7XZcV6HvmQ-qeWHpfCcDX0)
+- planning time is the planning time cutoff. E.g. give me your best solution after 30 seconds
 
 ## How the planner works
 TODO
