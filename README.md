@@ -31,7 +31,7 @@ To call the planner, simply make a service request using the API:
 - planning time is the planning time cutoff. E.g. give me your best solution after 30 seconds
 
 ## How the planner works
-TODO
+The planner is essentially a wrapper around OMPL doing Dubin’s path planning using BIT*. The input map is used to get the bounds of the state space and for determining if a sampled state is invalid (either by being out of bounds or within an obstacle). The planner uses the optimization objective of minimizing the path length of the solution. The planner then converts the solution path to a non-ompl format (list of tuples) and returns it to the user. The path is filled in with interpolated points via solutionPath.interpolate to create a dense path, but this can be tuned to vary the density of the output path.
 
 #### Publishers
 Topic | Type | Description
