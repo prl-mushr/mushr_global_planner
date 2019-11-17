@@ -1,3 +1,8 @@
 <launch>
-    <node pkg="mushr_global_planner" type="gpnode.py" name="mushr_global_planner" output="screen"/>
+    <node pkg="mushr_global_planner" type="gpnode.py" name="mushr_global_planner" output="screen">
+        <param name="reuse_plans" value="True" />
+        <param name="kernal_size" value="31" />
+        <param name="interpolation_density" value="1000" />
+        <param name="validity_resolution" value="0.0005" />
+    </node>
 </launch>

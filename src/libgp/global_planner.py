@@ -1,12 +1,19 @@
 import numpy as np
+from scipy import signal
 from ompl import base as ob
 from ompl import geometric as og
 
 
 class GlobalPlanner:
     def __init__(self, map_data, params):
-        self.map_data = map_data
         self.params = params
+
+        self.map_data = map_data
+        # Convolve map
+        if self.params['kernal_size']:
+            kernel = np.ones((self.params["kernal_size"], self.params["kernal_size"]))
+            kernel /= kernel.sum()
+            self.map_data = signal.convolve2d(map_data, kernel, mode='same') > 0  # boolean 2d array
 
     def plan(self, start_tup, goal_tup, turning_radius=10, planning_time=30.0):
         def isStateValid(state):
@@ -28,7 +35,7 @@ class GlobalPlanner:
 
         si = ob.SpaceInformation(space)
         si.setStateValidityChecker(ob.StateValidityCheckerFn(isStateValid))
-        si.setStateValidityCheckingResolution(0.0005) # Set based on thinness of walls in map
+        si.setStateValidityCheckingResolution(self.params["validity_resolution"]) # Set based on thinness of walls in map
         si.setValidStateSamplerAllocator(ob.ValidStateSamplerAllocator(ob.ObstacleBasedValidStateSampler(si))) 
         si.setup()
 
@@ -68,6 +75,6 @@ class GlobalPlanner:
         solutionPath = None
         if solved:
             solutionPath = pdef.getSolutionPath()
-            solutionPath.interpolate(1000)
+            solutionPath.interpolate(self.params['interpolation_density'])
             solutionPath = solution_path_to_tup(solutionPath)
         return bool(solved), solutionPath

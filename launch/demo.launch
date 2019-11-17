@@ -1,5 +1,10 @@
 <launch>
     <include file="$(find mushr_global_planner)/launch/map_server.launch" />
-    <node pkg="mushr_global_planner" type="gpnode.py" name="mushr_global_planner" output="screen"/>
+    <node pkg="mushr_global_planner" type="gpnode.py" name="mushr_global_planner" output="screen">
+        <param name="reuse_plans" value="True" />
+        <param name="kernal_size" value="False" />
+        <param name="interpolation_density" value="1000" />
+        <param name="validity_resolution" value="0.0005" />
+    </node>
     <node pkg="mushr_global_planner" type="global_planner_demo.py" name="mushr_gp_demo" output="screen"/>
 </launch>
